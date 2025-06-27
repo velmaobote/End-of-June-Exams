@@ -25,9 +25,6 @@ if (a > b) {
 }
 
 // Part B – Using Ternary Operator- Use nested ternary to handle equal too.
-let a = 4;
-let b = 3;
-
 console.log(
   a > b ? "a is greater than b" : a < b ? "a is less than b" : "a is equal to b"
 );
