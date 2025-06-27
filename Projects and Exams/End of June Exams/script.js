@@ -25,6 +25,9 @@ if (a > b) {
 }
 
 // Part B – Using Ternary Operator- Use nested ternary to handle equal too.
+// Reusing variables 'a' and 'b' from Part A to avoid error:"Cannot redeclare block-scoped variable 'a'".
+// This happened because 'let' doesn't allow redeclaring variables in the same scope.
+
 console.log(
   a > b ? "a is greater than b" : a < b ? "a is less than b" : "a is equal to b"
 );
