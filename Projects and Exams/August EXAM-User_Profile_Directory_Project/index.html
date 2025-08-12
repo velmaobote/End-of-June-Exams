@@ -1,0 +1,447 @@
+<!--
+User Profile Directory — Vanilla JS + Tailwind (CDN) Starter
+Includes: semantic HTML, responsive Grid/Flex, positioning (sticky/fixed), forms, table view, multimedia sample, dark mode, loading/error states, search & filter, details toggle, Git-friendly structure.
+
+To run: open this file in a browser. For React version, see the README section at the bottom of this file.
+-->
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Profile Directory</title>
+    <!-- WARNING: Tailwind CDN is for development only. Use Tailwind CLI/PostCSS for production. -->
+    <meta
+      name="tailwind-cdn-warning"
+      content="Tailwind CDN is for development only. See https://tailwindcss.com/docs/installation for production setup."
+    />
+    <!-- Tailwind CSS via CDN for speed (can switch to CLI later) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { brand: { DEFAULT: "#0ea5e9", dark: "#0369a1" } },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Progressive enhancement area for custom CSS (beyond Tailwind) */
+      :root {
+        --ring: 0 0 0 3px rgba(14, 165, 233, 0.35);
+      }
+      /* Focus outline for a11y */
+      :focus-visible {
+        outline: var(--ring);
+      }
+      /* Grid fallback if Tailwind fails to load */
+      .grid-fallback {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1rem;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors"
+  >
+    <!-- ===== Header / Semantic landmarks ===== -->
+    <header
+      class="sticky top-0 z-50 backdrop-blur bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800"
+    >
+      <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
+        <a href="#" class="font-bold text-lg tracking-tight">User Directory</a>
+        <div class="ml-auto flex items-center gap-2">
+          <button
+            id="themeToggle"
+            class="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-sm"
+          >
+            🌙 <span class="sr-only">Toggle dark mode</span>
+          </button>
+          <a
+            href="#table-view"
+            class="px-3 py-1.5 rounded-lg bg-brand text-white text-sm"
+            >Table View</a
+          >
+          <a
+            href="#about"
+            class="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-sm"
+            >About</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <!-- ===== Main ===== -->
+    <main id="main" class="max-w-6xl mx-auto px-4 py-6">
+      <!-- Controls: Form (search + filters) -->
+      <section aria-labelledby="controls-title" class="mb-6">
+        <h2 id="controls-title" class="text-xl font-semibold mb-2">
+          Find users
+        </h2>
+        <form id="controls" class="grid sm:grid-cols-3 gap-3" role="search">
+          <label class="flex flex-col gap-1">
+            <span class="text-sm">Search by name or username</span>
+            <input
+              id="q"
+              name="q"
+              type="search"
+              placeholder="e.g. Leanne or Bret"
+              class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800"
+            />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm">Filter by city</span>
+            <select
+              id="city"
+              name="city"
+              class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800"
+            >
+              <option value="">All cities</option>
+            </select>
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="text-sm">Filter by company</span>
+            <select
+              id="company"
+              name="company"
+              class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800"
+            >
+              <option value="">All companies</option>
+            </select>
+          </label>
+        </form>
+      </section>
+
+      <!-- Status area -->
+      <section id="status" class="mb-4 hidden" aria-live="polite"></section>
+
+      <!-- Cards grid -->
+      <section aria-labelledby="grid-title">
+        <h2 id="grid-title" class="sr-only">User cards grid</h2>
+        <div
+          id="grid"
+          class="grid-fallback sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        ></div>
+      </section>
+
+      <!-- Multimedia sample (HTML5 media + iframe) -->
+      <section id="about" class="mt-10 space-y-3">
+        <h2 class="text-xl font-semibold">About this project</h2>
+        <p>
+          This directory demonstrates semantic HTML, CSS layout (Flex/Grid),
+          positioning, forms, Fetch API, DOM events, accessibility, and more.
+        </p>
+        <figure
+          class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800"
+        >
+          <figcaption class="px-3 py-2 text-sm">
+            Short ambient loop (audio tag)
+          </figcaption>
+          <audio controls class="w-full">
+            <source
+              src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+              type="audio/mpeg"
+            />
+            Audio unavailable or blocked. Try again later or use a different
+            file.
+          </audio>
+        </figure>
+        <div
+          class="aspect-video rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800"
+        >
+          <iframe
+            class="w-full h-full"
+            src="https://www.youtube.com/embed/PoRJizFvM7s"
+            title="HTTP & Fetch in 100 Seconds"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </section>
+
+      <!-- Table view (HTML tables) -->
+      <section id="table-view" class="mt-12">
+        <h2 class="text-xl font-semibold mb-2">Users (Table)</h2>
+        <div
+          class="overflow-auto rounded-lg border border-slate-200 dark:border-slate-800"
+        >
+          <table class="min-w-full text-sm">
+            <caption class="sr-only">
+              All users with key fields
+            </caption>
+            <thead class="bg-slate-100 dark:bg-slate-800/50">
+              <tr>
+                <th scope="col" class="text-left px-3 py-2">Name</th>
+                <th scope="col" class="text-left px-3 py-2">Username</th>
+                <th scope="col" class="text-left px-3 py-2">Email</th>
+                <th scope="col" class="text-left px-3 py-2">Company</th>
+                <th scope="col" class="text-left px-3 py-2">City</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+            <tfoot class="bg-slate-50 dark:bg-slate-800/30">
+              <tr>
+                <td colspan="5" class="px-3 py-2" id="tableCount">0 users</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <button
+      id="helpBtn"
+      class="fixed bottom-4 right-4 px-4 py-2 rounded-full shadow-lg bg-brand text-white"
+    >
+      Help
+    </button>
+
+    <!-- Footer -->
+    <footer
+      class="mt-16 border-t border-slate-200 dark:border-slate-800 py-8 text-center text-sm"
+    >
+      <p>
+        © 2025 Axia — User Profile Directory • Built with HTML, CSS, JavaScript
+      </p>
+    </footer>
+
+    <script>
+      // ===================== Utilities & State =====================
+      const API = "https://jsonplaceholder.typicode.com/users";
+      const els = {
+        grid: document.getElementById("grid"),
+        status: document.getElementById("status"),
+        q: document.getElementById("q"),
+        city: document.getElementById("city"),
+        company: document.getElementById("company"),
+        tableBody: document.getElementById("tableBody"),
+        tableCount: document.getElementById("tableCount"),
+        themeToggle: document.getElementById("themeToggle"),
+        helpBtn: document.getElementById("helpBtn"),
+      };
+
+      let users = [];
+      let filtered = [];
+
+      // Dark mode (localStorage)
+      const setTheme = (value) => {
+        document.documentElement.classList.toggle("dark", value === "dark");
+        localStorage.setItem("theme", value);
+        els.themeToggle.textContent = value === "dark" ? "☀️" : "🌙";
+      };
+      const initialTheme =
+        localStorage.getItem("theme") ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      setTheme(initialTheme);
+      els.themeToggle.addEventListener("click", () =>
+        setTheme(
+          document.documentElement.classList.contains("dark") ? "light" : "dark"
+        )
+      );
+
+      // Toast/help example
+      els.helpBtn.addEventListener("click", () =>
+        alert(
+          'Tip: Use the search and filters to narrow results. Click "Details" on a card!'
+        )
+      );
+
+      // Fetch with loading & error states
+      async function loadUsers() {
+        showStatus("Loading users…");
+        try {
+          const res = await fetch(API);
+          if (!res.ok) {
+            if (res.status === 403) {
+              throw new Error(
+                "API access forbidden (403). This may be due to network restrictions or browser extensions."
+              );
+            } else {
+              throw new Error("Network error: " + res.status);
+            }
+          }
+          users = await res.json();
+        } catch (err) {
+          console.error(err);
+          // Fallback dataset (minimal) if offline or error
+          users = [
+            {
+              id: 1,
+              name: "Fallback Leanne Graham",
+              username: "Bret",
+              email: "Sincere@april.biz",
+              phone: "1-770-736-8031",
+              website: "hildegard.org",
+              company: { name: "Romaguera-Crona" },
+              address: { city: "Gwenborough" },
+            },
+            {
+              id: 2,
+              name: "Fallback Ervin Howell",
+              username: "Antonette",
+              email: "Shanna@melissa.tv",
+              phone: "010-692-6593",
+              website: "anastasia.net",
+              company: { name: "Deckow-Crist" },
+              address: { city: "Wisokyburgh" },
+            },
+          ];
+          showStatus(
+            err.message.includes("403")
+              ? "API access forbidden (403). Loaded fallback data. This may be caused by network restrictions or browser extensions."
+              : "You appear to be offline or the API is unavailable. Loaded fallback data.",
+            "warn"
+          );
+        } finally {
+          populateFilters(users);
+          applyFilters();
+          // Keep status visible if warning, otherwise hide
+          if (!els.status.className.includes("bg-yellow-100")) hideStatus();
+        }
+      }
+
+      function showStatus(msg, kind = "info") {
+        els.status.classList.remove("hidden");
+        const color =
+          kind === "warn"
+            ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-200"
+            : kind === "error"
+            ? "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200"
+            : "bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-200";
+        els.status.className = `mb-4 p-3 rounded-lg ${color}`;
+        els.status.textContent = msg;
+      }
+      function hideStatus() {
+        els.status.classList.add("hidden");
+      }
+
+      // Populate city/company filters
+      function populateFilters(data) {
+        const cities = Array.from(
+          new Set(data.map((u) => u.address?.city).filter(Boolean))
+        ).sort();
+        const companies = Array.from(
+          new Set(data.map((u) => u.company?.name).filter(Boolean))
+        ).sort();
+        els.city.innerHTML =
+          '<option value="">All cities</option>' +
+          cities.map((c) => `<option>${c}</option>`).join("");
+        els.company.innerHTML =
+          '<option value="">All companies</option>' +
+          companies.map((c) => `<option>${c}</option>`).join("");
+      }
+
+      // Apply filters & render
+      function applyFilters() {
+        const q = els.q.value.trim().toLowerCase();
+        const city = els.city.value;
+        const company = els.company.value;
+
+        filtered = users.filter((u) => {
+          const matchesQ = q
+            ? u.name.toLowerCase().includes(q) ||
+              u.username.toLowerCase().includes(q)
+            : true;
+          const matchesCity = city ? u.address?.city === city : true;
+          const matchesCompany = company ? u.company?.name === company : true;
+          return matchesQ && matchesCity && matchesCompany;
+        });
+
+        renderGrid(filtered);
+        renderTable(filtered);
+      }
+
+      // DOM events (input + change)
+      ["input", "change"].forEach((evt) => {
+        els.q.addEventListener(evt, applyFilters);
+        els.city.addEventListener(evt, applyFilters);
+        els.company.addEventListener(evt, applyFilters);
+      });
+
+      // Render helpers
+      function avatarFor(id) {
+        // Deterministic placeholder avatar
+        return `https://i.pravatar.cc/160?img=${(id % 70) + 1}`;
+      }
+
+      function renderGrid(data) {
+        els.grid.innerHTML = data
+          .map((user) => {
+            const {
+              id,
+              name,
+              username,
+              email,
+              phone,
+              website,
+              company,
+              address,
+            } = user;
+            const city = address?.city ?? "—";
+            const companyName = company?.name ?? "—";
+            return `
+        <article class="relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">
+          <div class="absolute top-3 right-3 text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">Active</div>
+          <div class="flex items-center gap-3">
+            <img src="${avatarFor(
+              id
+            )}" alt="Avatar of ${name}" class="w-14 h-14 rounded-full border border-slate-200 dark:border-slate-700 object-cover" />
+            <div>
+              <h3 class="font-semibold leading-tight">${name}</h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300">@${username}</p>
+            </div>
+          </div>
+          <dl class="mt-3 grid grid-cols-2 gap-2 text-sm">
+            <div><dt class="text-slate-500">Email</dt><dd class="truncate"><a class="underline" href="mailto:${email}">${email}</a></dd></div>
+            <div><dt class="text-slate-500">Company</dt><dd>${companyName}</dd></div>
+            <div><dt class="text-slate-500">City</dt><dd>${city}</dd></div>
+          </dl>
+          <button data-id="${id}" class="mt-3 w-full details-toggle px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700">Details</button>
+          <div id="details-${id}" class="mt-3 hidden text-sm">
+            <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+            <p><strong>Website:</strong> <a class="underline" href="http://${website}" target="_blank" rel="noreferrer">${website}</a></p>
+          </div>
+        </article>`;
+          })
+          .join("");
+
+        // Wire up details toggles
+        els.grid.querySelectorAll(".details-toggle").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            const details = document.getElementById(`details-${id}`);
+            details.classList.toggle("hidden");
+            btn.textContent = details.classList.contains("hidden")
+              ? "Details"
+              : "Hide details";
+          });
+        });
+      }
+
+      function renderTable(data) {
+        els.tableBody.innerHTML = data
+          .map(
+            (u) => `
+      <tr class="odd:bg-white even:bg-slate-50 dark:odd:bg-slate-900 dark:even:bg-slate-800/40">
+        <th scope="row" class="px-3 py-2 text-left font-medium">${u.name}</th>
+        <td class="px-3 py-2">${u.username}</td>
+        <td class="px-3 py-2"><a class="underline" href="mailto:${u.email}">${
+              u.email
+            }</a></td>
+        <td class="px-3 py-2">${u.company?.name ?? "—"}</td>
+        <td class="px-3 py-2">${u.address?.city ?? "—"}</td>
+      </tr>
+    `
+          )
+          .join("");
+        els.tableCount.textContent = `${data.length} user${
+          data.length !== 1 ? "s" : ""
+        }`;
+      }
+
+      // Init
+      loadUsers();
+    </script>
+  </body>
+</html>
